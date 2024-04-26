@@ -7,7 +7,6 @@ namespace RunAgentClient
     using Newtonsoft.Json;
     using System.Net.Http;
     using System;
-    using System.Linq;
     using ExcelDna.Registration;
 
     /// <summary>
@@ -111,16 +110,17 @@ namespace RunAgentClient
         public static object RunAgent(
             [ExcelArgument(Name = "inputMessage", Description = "AI エージェントに送信する入力メッセージ")]
             string inputMessage,
-            [ExcelArgument(Name = "serverUrl", Description = "AI エージェントがホストされているサーバーの URL。デフォルトは 'http://localhost:8889/chat'")]
-            string serverUrl = "http://localhost:8889/chat",
             [ExcelArgument(Name = "model", Description = "使用する AI モデルの名前。デフォルトは 'gpt-4-turbo-preview'")]
-            string model = "gpt-4-turbo-preview")
+            string model = "gpt-4-turbo-preview",
+            [ExcelArgument(Name = "serverUrl", Description = "AI エージェントがホストされているサーバーの URL。デフォルトは 'http://localhost:8889/chat'")]
+            string serverUrl = "http://localhost:8889/chat"
+            )
         {
             return AsyncTaskUtil.RunTask(
                 "RunAgent",
                 new object[] { inputMessage, serverUrl, model }, async () =>
                 {
-                    return await RunAgentAsync(inputMessage, serverUrl, model);
+                    return await RunAgentAsync(inputMessage, model, serverUrl);
                 });
         }
 
@@ -131,10 +131,10 @@ namespace RunAgentClient
         /// レスポンスは、JSON 文字列から Excel 文字列に変換され、先頭と末尾のダブルクォートが削除されます。
         /// </summary>
         /// <param name="inputMessage">AI エージェントに送信する入力メッセージ</param>
-        /// <param name="serverUrl">AI エージェントがホストされているサーバーの URL</param>
         /// <param name="model">使用する AI モデルの名前</param>
+        /// <param name="serverUrl">AI エージェントがホストされているサーバーの URL</param>
         /// <returns>AI エージェントからのレスポンスメッセージ。JSON 文字列から Excel 文字列に変換され、先頭と末尾のダブルクォートが削除されます。</returns>
-        private static async Task<string> RunAgentAsync(string inputMessage, string serverUrl, string model)
+        private static async Task<string> RunAgentAsync(string inputMessage, string model, string serverUrl)
         {
             try
             {
