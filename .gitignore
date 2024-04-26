@@ -591,3 +591,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,python,windows
+langchain_fastapi.bat
