@@ -6,9 +6,17 @@ ExcelAgentTemplate is a sample code for an Excel add-in and Python script that a
 
 With this Excel add-in, you can use functions in Excel that take a prompt as a string input, give instructions to an agent using LLMs, and receive the results as a string output. For example, if you enter `=RunAgent("Act as a corporate information researcher. Find the location of " & A1 & ".")`, it will search the web for the location of the company listed in cell `A1` and output the result. If you have a list of company names, you can quickly generate a list of locations.
 
-### Positioning of ExcelAgentTemplate
+### Use Cases Suitable for ExcelAgentTemplate
 
-The interface for running agents as Excel functions is suitable for intermediate use cases between running agents through a chat interface and running agents from program code or flow-based no-code tools. It achieves the repeated use of the same chat, which is difficult with chat interfaces, while enabling easy trial and error, data access, and manual modifications, which are difficult with program code or flow-based no-code tools.
+We recommend using ExcelAgentTemplate primarily for non-routine tasks.
+
+The interface for running agents as Excel functions is suitable for intermediate use cases between running agents through a chat interface and running agents from program code or flow-based no-code tools. It achieves the repeated use of the same chain, which is difficult with chat interfaces, while enabling easy trial and error, data access, and manual modifications, which are difficult with program code or flow-based no-code tools.
+
+The fact that the same chain is executed multiple times is an advantage of using the chain abstraction even if you have to operate a time-consuming UI that is not in chat format. However, in non-routine tasks, it is rare to use the same chain the next day. This is why flow-based UIs are not suitable for some tasks. An Excel-based UI is ideal for this use case.
+
+The granularity of function calls is also important. In daily work, you don't want to make calls at the same granular level as LLM utterances. We believe that the final execution result of an agent is the just-right granularity for function calls. This is another point where ExcelAgentTemplate can contribute.
+
+When non-routine tasks become routine, let's replace this with LangChain or similar tools. We are developing a tool to convert from Excel to LangChain.
 
 ### Explanation for Those Who Can Write Code
 
