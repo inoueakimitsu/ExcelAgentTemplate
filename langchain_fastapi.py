@@ -22,7 +22,7 @@ DEFAULT_HOST: str = "0.0.0.0"
 DEFAULT_LOG_LEVEL: str = "debug"
 
 # デフォルトのキャッシュディレクトリを設定します。
-DEFAULT_CACHE_DIR: str = "./langchain_whole_chain_cache"
+DEFAULT_CACHE_DIR: str = "./.cache"
 
 # 実装メモ:
 # LangChain の Caching 機能は LLM の入出力はキャッシュできても、
