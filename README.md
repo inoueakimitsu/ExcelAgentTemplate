@@ -6,6 +6,13 @@ ExcelAgentTemplate is a sample code for an Excel add-in and Python script that a
 
 With this Excel add-in, you can use functions in Excel that take a prompt as a string input, give instructions to an agent using LLMs, and receive the results as a string output. For example, if you enter `=RunAgent("Act as a corporate information researcher. Find the location of " & A1 & ".")`, it will search the web for the location of the company listed in cell `A1` and output the result. If you have a list of company names, you can quickly generate a list of locations.
 
+For Example:
+|     | A        | B                                                                  | C                                                                                                                              |
+| --- | -------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Company  | NumEmployeesResearchResult                                         | NumEmployees                                                                                                                   |
+| 2   | Example | =**RunAgent("Report the number of employees of " & A2)** | =**RunAgent(“From the following text, extract the number of employees and output the number only: ” & B2)** |
+
+
 ### Use Cases Suitable for ExcelAgentTemplate
 
 We recommend using ExcelAgentTemplate primarily for non-routine tasks.
