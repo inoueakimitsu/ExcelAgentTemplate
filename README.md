@@ -22,7 +22,7 @@ ExcelAgentTemplate offers the following features:
 |     | A        | B                                                                  | C                                                                                                                              |
 | --- | -------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
 | 1   | Company Name   | Number of Employees - Research Report                                             | Number of Employees                                                                                                                       |
-| 2   | Example  | `=RunAgent("Research the number of employees for the company in cell A2")`           | `=RunAgent("Please extract the number of employees from the text in cell B2 and return only the numeric value.")`                  |
+| 2   | Example  | `=RunAgent("Research the number of employees for the company " & A2)`           | `=RunAgent("Please extract the number of employees from the following text. Report only the resulting numeric value: " & B2)`                  |
 
 ### Applicable Scenarios
 
