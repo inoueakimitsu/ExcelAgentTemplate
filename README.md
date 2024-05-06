@@ -6,7 +6,7 @@
 
 **ExcelAgentTemplate** is a powerful add-in that combines Microsoft Excel with Python. This tool enables users to leverage the latest LLMs (Large Language Models) through Excel functions and execute automated agents. By simply entering specific prompts in Excel cells, users can easily perform complex queries and data processing tasks utilizing LLMs.
 
-For example, using the function `=RunAgent("Act as a corporate information researcher. Please find the location of the company in cell A1.")`, the add-in automatically investigates the location of the company name entered in cell A1 and directly displays the result in Excel. This eliminates the need for manual data searches and input, allowing for efficient work progress.
+For example, using the function `=RunAgent("Act as a corporate information researcher. Please find the location of " & A1 & ".")`, the add-in automatically investigates the location of the company name entered in cell A1 and directly displays the result in Excel. This eliminates the need for manual data searches and input, allowing for efficient work progress.
 
 ### Features and Benefits
 
