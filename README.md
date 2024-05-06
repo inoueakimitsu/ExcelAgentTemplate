@@ -1,5 +1,7 @@
 # ExcelAgentTemplate
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Overview
 
 **ExcelAgentTemplate** is a powerful add-in that combines Microsoft Excel with Python. This tool enables users to leverage the latest LLMs (Large Language Models) through Excel functions and execute automated agents. By simply entering specific prompts in Excel cells, users can easily perform complex queries and data processing tasks utilizing LLMs.
