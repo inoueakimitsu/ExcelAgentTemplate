@@ -6,7 +6,7 @@
 
 **ExcelAgentTemplate** is a powerful add-in that combines Microsoft Excel with Python. This tool enables users to leverage the latest LLMs (Large Language Models) through Excel functions and execute automated agents. By simply entering specific prompts in Excel cells, users can easily perform complex queries and data processing tasks utilizing LLMs.
 
-For example, using the function `=RunAgent("Act as a corporate information researcher. Please find the location of " & A1 & ".")`, the add-in automatically investigates the location of the company name entered in cell A1 and directly displays the result in Excel. This eliminates the need for manual data searches and input, allowing for efficient work progress.
+For example, using the function `=RunAgent("Act as a corporate information researcher. Please find the location of the company in cell A1.")`, the add-in automatically investigates the location of the company name entered in cell A1 and directly displays the result in Excel. This eliminates the need for manual data searches and input, allowing for efficient work progress.
 
 ### Features and Benefits
 
@@ -22,7 +22,7 @@ ExcelAgentTemplate offers the following features:
 |     | A        | B                                                                  | C                                                                                                                              |
 | --- | -------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
 | 1   | Company Name   | Number of Employees - Research Report                                             | Number of Employees                                                                                                                       |
-| 2   | Example  | `=RunAgent("Research the number of employees for the company " & A2)`           | `=RunAgent("Please extract the number of employees from the following text. Report only the resulting numeric value: " & B2)`                  |
+| 2   | Example  | `=RunAgent("Research the number of employees for the company in cell A2")`           | `=RunAgent("Please extract the number of employees from the text in cell B2 and return only the numeric value.")`                  |
 
 ### Applicable Scenarios
 
@@ -58,23 +58,23 @@ ExcelAgentTemplate is particularly well-suited for the following purposes:
 
 1. Activate the virtual environment (`.\.venv\Scripts\activate`) and then run `python langchain_fastapi.py`
 2. Double-click `RunAgentClient/bin/Debug/RunAgentClient-AddIn64.xll`.
-3. A notification screen saying "There are no usable digital signatures" will be displayed. Click "Enable this add-in for this session only (E)". The `RunAgent` function will be available only for this session.
+3. A notification screen stating "There are no usable digital signatures" will be displayed. Click "Enable this add-in for this session only (E)". The `RunAgent` function will be available only for this session.
 4. Create a new blank workbook in that session.
 5. In any cell, enter a formula like `=RunAgent("Please research the number of employees for XYZ Corporation.")`, replacing "XYZ Corporation" with an appropriate company name, and press Enter.
 6. `#N/A` will be displayed. On the Python screen, logs indicating the processing status will be shown. Once the processing is complete, the cell content will be replaced with the actual output.
 
 ## Limitations
 
-- Please be mindful of OpenAI API usage.
-- This tool does not utilize GPU.
+- Keep track of your OpenAI API usage.
+- This tool does not use a GPU.
 
 ## Frequently Asked Questions
 
 Q. What tasks is ExcelAgentTemplate suitable for?
 A. ExcelAgentTemplate is well-suited for automating various business tasks such as data collection, analysis, and report generation. It is particularly effective for non-standard tasks and situations that require integration with external data.
 
-Q. How much does the API usage cost?
-A. API usage fees vary depending on the usage volume. Please refer to the websites of each API for details. Some APIs offer free plans up to a certain usage limit.
+Q. How much do the APIs cost?
+A. API costs depend on usage. Check each API's website for details. Some offer free plans with usage limits.
 
 Q. Is commercial use allowed?
 A. Yes, commercial use is permitted. The project is provided under the MIT License, allowing free usage, modification, and distribution. However, please adhere to the terms of service of each API when using them.
@@ -83,9 +83,9 @@ Q. How can I add new agents?
 A. Please refer to the following:
 - Publish an API endpoint that implements the agent. It is recommended to use a caching mechanism for cases where the same message is input.
 	- Reference: https://python.langchain.com/docs/modules/model_io/llms/llm_caching/
-- The Excel add-in is created using Excel-DNA. Since LLM outputs take time, make sure to perform asynchronous processing as shown in the sample code.
+- The Excel add-in is created using Excel-DNA. Since LLM outputs can take some time, ensure that you perform asynchronous processing as shown in the sample code.
 	- Reference: https://excel-dna.net/docs/guides-basic/asynchronous-functions
-- For web searches, Tavily is used instead of directly using SerpAPI. Tavily seems to have better compatibility with LLMs compared to raw Google searches, DuckDuckGo, or Bing.
+- For web searches, Tavily is used instead of directly using SerpAPI. Tavily seems to be more compatible with LLMs compared to raw Google searches, DuckDuckGo, or Bing.
 
 If you have any other questions, feel free to ask on the GitHub Issues or the Discord server.
 
@@ -94,7 +94,7 @@ If you have any other questions, feel free to ask on the GitHub Issues or the Di
 Discussions and information exchanges related to the project are conducted on the following Discord server:
 - [ExcelAgentTemplate Discord Server](https://discord.gg/yCU6DwTX)
 
-Please feel free to join!
+Feel free to join!
 
 ## Roadmap
 
