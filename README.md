@@ -44,7 +44,7 @@ ExcelAgentTemplate is particularly well-suited for the following purposes:
    pip install uv
    uv venv .venv
    .venv\Scripts\activate
-   pip install -r requirements.txt
+   uv pip install -r requirements.txt
    ```
 3. Rename `.env.example` to `.env` and set the required API keys
 
@@ -72,12 +72,6 @@ ExcelAgentTemplate is particularly well-suited for the following purposes:
 
 Q. What tasks is ExcelAgentTemplate suitable for?
 A. ExcelAgentTemplate is well-suited for automating various business tasks such as data collection, analysis, and report generation. It is particularly effective for non-standard tasks and situations that require integration with external data.
-
-Q. How much do the APIs cost?
-A. API costs depend on usage. Check each API's website for details. Some offer free plans with usage limits.
-
-Q. Is commercial use allowed?
-A. Yes, commercial use is permitted. The project is provided under the MIT License, allowing free usage, modification, and distribution. However, please adhere to the terms of service of each API when using them.
 
 Q. How can I add new agents?
 A. Please refer to the following:
