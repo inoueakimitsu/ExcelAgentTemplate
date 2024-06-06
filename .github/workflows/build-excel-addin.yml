@@ -16,3 +16,9 @@ jobs:
 
       - run: |
           msbuild -version
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: excel-addin
+          path: 'Excel Add-in/bin/Release'
