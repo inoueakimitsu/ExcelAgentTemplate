@@ -16,3 +16,6 @@ jobs:
 
       - run: |
           msbuild -version
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
