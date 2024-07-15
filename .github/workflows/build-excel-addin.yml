@@ -19,7 +19,7 @@ jobs:
 
       - name: Archive build artifacts
         run: |
-          Compress-Archive -Path RunAgentClient/bin/Release/* -DestinationPath build-artifacts.zip
+          Compress-Archive -Path RunAgentClient/bin/Release -DestinationPath build-artifacts.zip
  
       - name: Create GitHub Release
         id: create_release
