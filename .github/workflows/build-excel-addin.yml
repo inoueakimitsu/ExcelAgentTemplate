@@ -17,6 +17,18 @@ jobs:
       - run: |
           msbuild -version /p:Configuration=Release
 
+      - name: List build artifacts
+        run: |
+          dir RunAgentClient
+
+      - name: List build artifacts
+        run: |
+          dir RunAgentClientbin\bin
+
+      - name: List build artifacts
+        run: |
+          dir RunAgentClient\bin\Release
+
       - name: Archive build artifacts
         run: |
           Compress-Archive -Path RunAgentClient/bin/Release -DestinationPath build-artifacts.zip
