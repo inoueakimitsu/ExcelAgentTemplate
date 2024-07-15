@@ -31,11 +31,11 @@ jobs:
 
       - name: List build artifacts
         run: |
-          dir RunAgentClient\bin\Release
+          dir RunAgentClient\RunAgentClient\bin\Release
 
       - name: Archive build artifacts
         run: |
-          Compress-Archive -Path RunAgentClient/bin/Release -DestinationPath build-artifacts.zip
+          Compress-Archive -Path RunAgentClient/RunAgentClient/bin/Release -DestinationPath build-artifacts.zip
  
       - name: Create GitHub Release
         id: create_release
