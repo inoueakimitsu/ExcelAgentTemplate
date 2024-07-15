@@ -27,7 +27,7 @@ jobs:
 
       - name: List build artifacts
         run: |
-          dir RunAgentClientbin\RunAgentClientbin
+          dir RunAgentClient\RunAgentClient
 
       - name: List build artifacts
         run: |
