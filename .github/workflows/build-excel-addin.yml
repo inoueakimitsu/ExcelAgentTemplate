@@ -19,7 +19,7 @@ jobs:
 
       - name: List build directory
         run: |
-          Get-ChildItem -Recurse . | Format-List
+          Get-ChildItem -Recurse .. | Format-List
       
       - name: List build artifacts
         run: |
