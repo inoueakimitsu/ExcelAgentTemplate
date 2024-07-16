@@ -47,10 +47,15 @@ jobs:
       - name: Restore
         run: dotnet restore ${{ env.App_Project_Path }}
 
-      - name: Build with dotnet
-        run: dotnet build ${{ env.App_Project_Path }} --no-restore
+      # - name: Build with dotnet
+      #   run: dotnet build ${{ env.App_Project_Path }} --no-restore
+      #   env:
+      #     Configuration: ${{ matrix.configuration }}
+
+      - name: Build
+        run: msbuild ${{ env.App_Project_Path }} /t:Build /p:Configuration=Release
         env:
-          Configuration: ${{ matrix.configuration }}
+          DOTNET_ROOT: C:\Program Files\dotnet
 
       # Execute all unit tests in the solution
       - name: Execute unit tests
