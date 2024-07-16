@@ -4,60 +4,135 @@ on:
   pull_request:
     types: [synchronize, opened]
     
+
 jobs:
   build:
-    runs-on: windows-2019
+    strategy:
+        matrix:
+          configuration: [Release]  # [Debug, Release]
+    runs-on: windows-latest
+    timeout-minutes: 15
+
     steps:
+      # Dump for debug workflow
+      - name: Dump Github Context
+        env:
+          GitHub_Context: ${{ toJson(github) }}
+        run: echo "${GitHub_Context}"
+
+      # Checks-out repository under $GITHUB_WORKSPACE: https://github.com/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+      # Install the .NET workload: https://github.com/actions/setup-dotnet
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-      - run: |
-          msbuild -version /p:Configuration=Release
+      # Add MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: List build directory
+      # Restore before build and test
+      - name: Restore
+        run: dotnet restore ${{ env.Solution_Path }}
+
+      - name: Build with dotnet
+        run: dotnet build ${{ env.App_Project_Path }} --no-restore
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+      # Execute all unit tests in the solution
+      - name: Execute unit tests
+        run: dotnet test --no-restore
+
+  create-release:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    needs: [build]
+    if: "contains( github.ref , 'tags/v')"
+
+    steps:
+      - name: Get version
+        shell: bash
         run: |
-          Get-ChildItem -Recurse .. | Format-List
-      
-      - name: List build artifacts
-        run: |
-          dir
+          echo "ver=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
-      - name: List build artifacts
+      - name: Set env
+        shell: bash
         run: |
-          dir RunAgentClient
+          echo "version=${{ env.ver }}" >> $GITHUB_ENV          # exeに反映されます
+          # echo "fileversion=${{ env.ver }}" >> $GITHUB_ENV    # 未設定だとVersionに連動します
+          echo "app_x64_framework_name=${{ env.App_Name }}_win-x64_framework-dependent_ver${{ env.ver }}" >> $GITHUB_ENV
+          echo "app_x64_self_name=${{ env.App_Name }}_win-x64_self-contained_ver${{ env.ver }}" >> $GITHUB_ENV
 
-      - name: List build artifacts
-        run: |
-          dir RunAgentClient\RunAgentClient
+      # Checks-out repository under $GITHUB_WORKSPACE: https://github.com/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: List build artifacts
-        run: |
-          dir RunAgentClient\RunAgentClient\bin\Release
+      # don't output pdb -> /p:DebugType=None /p:DebugSymbols=false
+      - name: dotnet publish x64 Framework-dependent
+        run: >
+          dotnet publish ${{ env.App_Project_Path }}
+          -c Release
+          -r win-x64
+          --self-contained false -p:UseAppHost=true
+          -p:PublishSingleFile=true
+          -p:PublishReadyToRun=false
+          -p:PublishTrimmed=false
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o outputs\${{ env.app_x64_framework_name }}
 
-      - name: Archive build artifacts
+      # don't output pdb -> /p:DebugType=None /p:DebugSymbols=false
+      - name: dotnet publish x64 Self-contained
+        run: >
+          dotnet publish ${{ env.App_Project_Path }}
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:PublishReadyToRun=false
+          -p:PublishTrimmed=false
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o outputs\${{ env.app_x64_self_name }}
+
+      # Upload Actions Artifacts: https://github.com/actions/upload-artifact
+      - name: Archive publish files
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.App_Name }}
+          path: outputs
+
+      # Create zip
+      - name: Create zip archive
+        shell: pwsh
         run: |
-          Compress-Archive -Path RunAgentClient/RunAgentClient/bin/Release -DestinationPath build-artifacts.zip
- 
-      - name: Create GitHub Release
+          Compress-Archive -Path outputs\${{ env.app_x64_framework_name }} -DestinationPath ${{ env.app_x64_framework_name }}.zip
+          Compress-Archive -Path outputs\${{ env.app_x64_self_name }} -DestinationPath ${{ env.app_x64_self_name }}.zip
+
+      # Create release page: https://github.com/ncipollo/release-action
+      - name: Create release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ env.ver }}
+          name: Ver ${{ env.ver }}
+          body: |
+            - Change design
+            - Bug fix
+          draft: true
           prerelease: false
+          artifacts: "${{ env.app_x64_framework_name }}.zip, ${{ env.app_x64_self_name }}.zip"
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Remove artifacts to save space: https://github.com/c-hive/gha-remove-artifacts
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build-artifacts.zip
-          asset_name: build-artifacts.zip
-          asset_content_type: application/zip
+          age: '1 weeks'
+          skip-recent: 2
