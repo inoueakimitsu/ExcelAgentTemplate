@@ -45,7 +45,7 @@ jobs:
         run: dotnet restore ${{ env.Solution_Path }}
 
       - name: Build with dotnet
-        run: dotnet build ${{ env.App_Project_Path }} --no-restore
+        run: dotnet build ${{ env.App_Project_Path }}
         env:
           Configuration: ${{ matrix.configuration }}
 
