@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [synchronize, opened]
     
+env:
+  App_Name: RunAgentClient
+  Solution_Path: RunAgentClient/RunAgentClient.sln
+  App_Project_Path: RunAgentClient/RunAgentClient/RunAgentClient.csproj
 
 jobs:
   build:
